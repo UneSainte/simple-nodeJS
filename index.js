@@ -71,17 +71,46 @@ app.put("/:id", (req, res) => {
 
   })
 
+  app.delete("/:id", (req, res) => {
+    // Récupérer l'ID de l'utilisateur depuis l'URL
+    const id = parseInt(req.params.id)
+  
+    // Trouver l'utilisateur dans la liste
+    const userIndex = users.findIndex((user) => user.id === id)
+  
+    // Si l'utilisateur n'existe pas, renvoyer une erreur 404
+    if (userIndex < 0)
+      return res.status(404).json({ msg: "utilisateur non trouvé" })
+  
+    // Supprimer l'utilisateur du tableau
+    users.splice(userIndex, 1)
+  
+    // Envoyer une réponse confirmant la suppression
+    res.json({
+      msg: "utilisateur supprimé",
+    })
+  })  
 
 
-app.delete("/", (req, res) => {
-        res.json({
-            msg: "hello rest api ici le DELETE",
-        })
-})
 
+// // GET : LIRE tous les utilisateurs
+// app.get("/", (req, res) => {
+// 	res.json(users)
+// })
 
-
-// GET : LIRE tous les utilisateurs
-app.get("/", (req, res) => {
-	res.json(users)
-})
+//GET: Un seul utilisateur
+app.get("/:id", (req, res) => {
+    // Récupérer l'ID de l'utilisateur depuis l'URL
+    const id = parseInt(req.params.id)
+  
+    // Trouver l'utilisateur dans la liste
+    const userIndex = users.findIndex((user) => user.id === id)
+  
+    // Si l'utilisateur n'existe pas, renvoyer une erreur 404
+    if (userIndex < 0)
+      return res.status(404).json({ msg: "utilisateur non trouvé" })
+  
+    // Envoyer l'utilisateur trouvé au client
+    res.json(users[userIndex])
+  })
+  
